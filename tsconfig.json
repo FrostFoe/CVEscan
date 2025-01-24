@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+      "module": "Node16",
+      "moduleResolution": "Node16",
+      "target": "ESNext",
+      "baseUrl": "./",
+      "paths": {
+        "@/runtime": ["./runtime"]
+      }
+    },
+    "exclude": ["./runtime"],
+    "ts-node": {
+      "files": true
+    }
+  }
+  

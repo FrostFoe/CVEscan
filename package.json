@@ -1,0 +1,8 @@
+{
+  "name": "ai_plugin_demo",
+  "dependencies": {
+    "@marscode/baas-sdk": "^1.0.1",
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0"
+  }
+}
