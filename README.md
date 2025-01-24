@@ -1,140 +1,112 @@
-# Cloud Function For AI Plugin
+# 🔥 **CVEscan: Vulnerability Scanner by FrostFoe**
 
-## Introduction
+### **CVEscan - Simplified Web Vulnerability Scanning**  
 
-This is a template that provides a clear and concise programming paradigm for cloud functions and can be quickly published as an AI Plugin, such as [actions in GPTs](https://platform.openai.com/docs/actions/introduction).
+**CVEscan** is a lightweight, command-line tool for scanning web applications for **known vulnerabilities**. Designed for ethical hackers and cybersecurity researchers, this tool integrates seamlessly with the CVE database to provide real-time vulnerability insights.  
 
-Cloud functions are part of the serverless architecture paradigm, which allows developers to build and run applications and services without having to manage infrastructure. This paradigm enables developers to focus more on their application logic and less on server management, provisioning, and scaling.
+Prepare to scan smartly and stay secure! 🚀  
 
-We also provide some easy-to-use capabilities for AI Plugin based on cloud function.
+---
 
-Let’s first take a look at the common process of developing an AI Plugin:
+## 🌟 **Key Features**
 
-1. Choose a programming language and framework, write code, and test it locally.
-2. Choose a cloud service provider and deploy the code.
-3. Write OpenAPI Schema description for the code. The schema will be used to create and register the code as an AI Plugin.
+- **🔍 Vulnerability Detection**  
+  Detect and report **known CVEs** for any given web application by querying its IP and port details.  
 
-As above, the whole process is very heavy. Can we only focus on certain key steps?
+- **⚡ Real-Time API Integration**  
+  Access **up-to-date CVE data** directly from trusted sources for reliable results.  
 
-- To write the necessary function logic only
-- To help automatically generate OpenAPI Schema without having to write it manually
+- **🌐 Target Analysis**  
+  Extract **IP addresses** and identify open ports for thorough reconnaissance.
 
-That's what this template does.
+- **📊 Concise Reporting**  
+  Get a detailed summary of vulnerabilities, including:  
+  - **CVE ID**
+  - **CVSS Score**
+  - **Affected Ports**
+  - **Vulnerability Summary**
 
-## Write a cloud function
+- **🎮 Simple Command-Line Usage**  
+  Minimalistic design makes scanning quick and efficient.
 
-To write a cloud function, you need to create a new file under the **api** directory, and the file should export the `handler` function, accepting the `Args` object as the parameter, and return the `Output` object.
+---
 
-Then you need to define the `Input` and `Output` interfaces, which help LLM to understand how to call the cloud function, especially the JSDoc comment in the interface.
+## 🚀 **Quick Start**
 
-The definitions of the `Input` and `Output` interfaces and the JSDoc comment will be parsed as an OpenAPI Schema and be used to register the definition of the AI plugin interface. They will also be used by the API Test plugin to generate test data.
+### 🛠️ **Prerequisites**  
+- **Node.js**
 
-```ts
-// api/sayhi/hello.ts
-import { Args } from '@/runtime';
+### 📥 **Setup**  
+Clone the repository and install dependencies:  
 
-export interface Input {
-  // The name of the user
-  name?: string;
-}
+```bash
+git clone https://github.com/FrostFoe/CVEscan.git
+cd CVEscan
+npm install
+```
 
-export interface Output {
-  // Reply to greet the user
-  message: string;
-}
+### 🎮 **Launch CVEscan**  
+Run the tool with:  
 
-/**
- * Say hello to the user when they introduce themselves
- */
-export async function handler({ input, logger }: Args<Input>): Promise<Output> {
-  const name = input.name || 'world';
+```bash
+node cvescan.js -u <target_url>
+```  
 
-  logger.info(`user name is ${name}`);
+**Example:**  
+```bash
+node cvescan.js -u https://example.com
+```
 
-  return {
-    message: `hello ${name}`
-  };
+## 📝 **Command Cheat Sheet**  
+
+| **Command**       | **Description**                                | **Example**                        |
+|--------------------|-----------------------------------------------|------------------------------------|
+| `-u <URL>`        | Specify the target URL to scan                | `node cvescan.js -u https://example.com` |
+| `--help`          | Display help for available commands           | `node cvescan.js --help`          |
+
+---
+
+## 🌌 **Features in Action**
+
+- **Target Analysis:**  
+  Input your target URL, and CVEscan will extract the **IPv4 address** and query open ports.  
+
+- **CVE Matching:**  
+  For each target, CVEscan identifies vulnerabilities based on the CVE database. Example output:  
+
+```bash
+Processing Target URL: https://example.com
+Coded by FrostFoe.
+IPv4 Address: 192.168.1.1
+Vulnerabilities: {
+  'CVE-2024-XXXX': {
+    cvss: 7.8,
+    ports: [80],
+    summary: 'Detailed vulnerability description.',
+    verified: false
+  },
+  ...
 }
 ```
 
-> For a more complex showcase, you can refer to the **/api/todo** directory, which primarily provides API services for the addition, deletion, modification, and query of todo. It also demonstrates how to use the storage service.
+---
 
-## Manage dependencies
+## 🔐 **Security and Disclaimer**  
 
-[PNPM](https://pnpm.io/) is recommended for managing dependencies.
+> **CVEscan is intended solely for educational and research purposes.**  
+> **Unauthorized use** against systems without explicit consent is **illegal**. The creators and contributors are not liable for any misuse or damage caused by this tool.  
 
+**Stay ethical and hack responsibly!** 🚨  
+
+---
+
+## 🌐 **Connect with FrostFoe**  
+
+- **GitHub:** [@FrostFoe](https://github.com/FrostFoe)  
+- **Telegram:** [FrostFoe](https://t.me/FrostFoe)  
+
+Feedback and contributions are always welcome!  
+
+---
+**CVEscan - Simplify Vulnerability Assessment!** 🚀  
 ```
-// install a dependency, for example: axios
-pnpm add axios
-```
-
-## OpenAPI Schema
-
-Writing an OpenAPI Schema is time-consuming. So MarsCode has provided schema generation tools, which can analyze the interface type descriptions of `Input` and `Output` and Comment from the code, and actively generate the corresponding Schema description.
-
-When building and deploying, this stage will genrate `metadata.json` file and then the file will be parsed to the final OpenAPI Schema.
-
-![gui-metadata](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/metadata.jpeg)
-
-## API Test
-
-MarsCode provides the API Test tool to help you test APIs.
-
-![gui-apitest](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gui_apitest.png)
-
-- Click the **API Test** button on the top to open the API Test panel. The test input data is automatically generated based on the JSON Schema file.
-- Click the **Send** button to send the request, and the response will be displayed in the output panel.
-
-## Deployment
-
-MarsCode provides integrated cloud function hosting capabilities that you can use to quickly deploy cloud functions by clicking the **Deploy** button at the top.
-
-![gui-deployments](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gui_deployments.png)
-
-After deployment, you can get deployment details from the **Service Details** window.
-
-![gui-servicedetail](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gui_servicedetail.png)
-
-You can copy the schema, then paste it to [ChatGPT](https://chat.openai.com/gpts) to register an GPTs action.
-
-## Register as AI Plugin
-
-1. Go to [ChatGPT](https://chat.openai.com/gpts)
-
-2. Click the **Create** button.
-
-   ![create gpts action](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gpt_create_action.jpeg)
-
-3. Fill in action information.
-
-   ![gpts action info](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gpt_action_info.jpeg)
-
-4. Add actions.
-
-   - Authentication
-
-     ![gpt_authentication](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gpt_authentication.jpeg)
-
-     - Authentication type: fill in **API key**.
-     - API key: value can be obtained from the **Service Details** window, click **Token** to copy it.
-     - Auth type: fill in **Bearer**.
-
-   - Schema
-
-     - Obtain from the **Service Details** window, click **Schema** to copy it.
-
-       ![gpt action schema copy](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gpt_action_schema_copy.jpeg)
-
-       ![gpt action schema](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gpt_action_schema.jpeg)
-
-     - Import from URL.
-
-       ![gpt schema url copy](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gpt_schema_url_copy.jpeg)
-
-       ![gpt schema url](https://lf-cdn.marscode.com/obj/eden-sg/ljhwz_lkpkbvsj/ljhwZthlaukjlkulzlp/project_template/prod/6a7bb0d45e3826780749b19626dc67986c720e60/images/cloud_function_baas_nodejs/gpt_schema_url.jpeg)
-
-5. Click the **Save** button to save the action.
-
-## Help
-
-If you need help, you might be able to find an answer in our [docs](https://docs.marscode.com/). Feel free to report bugs and give us feedback [here](https://discord.gg/qtVMXEDbRw).
